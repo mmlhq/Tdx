@@ -5,6 +5,7 @@ import time
 from datetime import datetime
 from apscheduler.schedulers.blocking import BlockingScheduler
 import json
+
 def import_data():
     # 登陆网站系统
     lg = bs.login()
@@ -75,6 +76,8 @@ def import_data():
                 else:
                     continue
 
+    cur_index.close()
+    cur_index.close()
     cnx.close()
 
     # 登出系统

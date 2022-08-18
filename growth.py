@@ -76,6 +76,8 @@ def import_data():
                 else:
                     continue
 
+    cur_index.close()
+    cur_growth.close()
     cnx.close()
 
     # 登出系统
