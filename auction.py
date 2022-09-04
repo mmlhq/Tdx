@@ -25,7 +25,7 @@ def import_data():
 
     isTradeday = data_list[0][1]
 
-    if isTradeday == "0":
+    if isTradeday == "1":
         headers={'Referer' :'https://finance.sina.com.cn'}
         # url='https://hq.sinajs.cn/list=sz002927'
 
