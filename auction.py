@@ -47,14 +47,11 @@ def import_data():
             file=requests.get(url=url,headers=headers)
             parts = file.text.split(',')
             preclose_price  = float(parts[2])
-            now_price = float(parts[3])
+            buy1_price = float(parts[6])
             if preclose_price is not None and preclose_price != 0:
-                print(code)
-                print(preclose_price)
-                print(now_price)
-                a_gains = (float(parts[3]) - float(parts[2])) / float(parts[2]) * 100
+                a_gains = (buy1_price - preclose_price) / preclose_price * 100
                 if a_gains >= 9.8:
-                    cur_auction.execute(cur_auction_insert%(code,today,parts[3],a_gains))
+                    cur_auction.execute(cur_auction_insert%(code,today,buy1_price,a_gains))
                     cnx.commit()
 
         cur_index.close()
