@@ -1,11 +1,10 @@
 # -*- coding: GBK-*- #
 ###  1. 更新交易状态，增加新股票 ###
-###  查询日并不能添加所有新股，而是有延迟？
-
 import baostock as bs
+import datetime
 import pymysql
 import json
-import datetime
+from apscheduler.schedulers.blocking import BlockingScheduler
 
 def Update_trade_status():
     lg = bs.login()
@@ -39,4 +38,9 @@ def Update_trade_status():
     cnx.close()
     lg = bs.logout()
 
-Update_trade_status()
+def dojob():
+    scheduler = BlockingScheduler()
+    scheduler.add_job(Update_trade_status,'cron',hour=23,minute=8)
+    scheduler.start()
+
+dojob()
