@@ -42,7 +42,7 @@ def Update_stock_basic():
 
 def dojob():
     scheduler = BlockingScheduler()
-    scheduler.add_job(Update_stock_basic,'cron',hour=23,minute=28)
+    scheduler.add_job(Update_stock_basic,'cron',hour=23,minute=18)
     scheduler.start()
 
 dojob()
