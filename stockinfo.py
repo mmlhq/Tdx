@@ -1,6 +1,7 @@
 import baostock as bs
 import pymysql
 import json
+from apscheduler.schedulers.blocking import BlockingScheduler
 
 def Update_stock_basic():
     lg = bs.login()
@@ -39,4 +40,9 @@ def Update_stock_basic():
     cnx.close()
     bs.logout()
 
-Update_stock_basic()
+def dojob():
+    scheduler = BlockingScheduler()
+    scheduler.add_job(Update_stock_basic,'cron',hour=23,minute=28)
+    scheduler.start()
+
+dojob()
