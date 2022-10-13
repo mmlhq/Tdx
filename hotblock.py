@@ -38,6 +38,13 @@ def import_data():
         contents = soup.select(".ts-hot-con a")
         block_web_list = [];
         for item in contents:
+            if "ÕÇ" in item.text:
+                netchg = "ÕÇ"
+            if "Éý" in item.text:
+                netchg = "ÕÇ"
+            if "µø" in item.text:
+                netchg = "µø"
+
             block = re.findall('(.+(?=°å¿é))', item.text)
             industry = re.findall('(.+(?=ÐÐÒµ))', item.text)
             if block != []:
@@ -57,9 +64,9 @@ def import_data():
         cur_block_update = "update hotblock set days = days+1 where(block, date) in (select block, date from block_v);";
         cur_block.execute(cur_block_update)
 
-        cur_block_insert = "insert into hotblock(block,date,days) values('%s','%s','%d');"
+        cur_block_insert = "insert into hotblock(block,date,days,NetChg) values('%s','%s','%d','%s');"
         for item in block_web_list:
-            cur_block.execute(cur_block_insert % (item, today, 0))
+            cur_block.execute(cur_block_insert % (item, today, 0, netchg))
         cur_block.close()
         cnx.commit()
         cnx.close()
