@@ -34,7 +34,7 @@ datas = json.loads(response.content.decode())
 boards = datas[5]["next"][2]["next"]
 for board in boards:
     # 检测board是否在tdx.boards中，如果不在则添加
-    if board["title"] not in tdx_boards:
+    if tuple([board["title"]]) not in tdx_boards:
         cur_boards.execute(cur_boards_insert%(board['key'],board['title']))
 
 cnx.commit()

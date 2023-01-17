@@ -40,9 +40,11 @@ def Update_stock_basic():
     cnx.close()
     bs.logout()
 
-def dojob():
-    scheduler = BlockingScheduler()
-    scheduler.add_job(Update_stock_basic,'cron',hour=23,minute=18)
-    scheduler.start()
+# def dojob():
+#     scheduler = BlockingScheduler()
+#     scheduler.add_job(Update_stock_basic,'cron',hour=23,minute=18)
+#     scheduler.start()
+#
+# dojob()
 
-dojob()
+Update_stock_basic()

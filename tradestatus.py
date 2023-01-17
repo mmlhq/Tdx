@@ -26,7 +26,7 @@ def Update_trade_status():
     insert_sql = "INSERT INTO `index2`(`code`,`tradeStatus`,`code_name`) Values(%s,%s,%s) "
 
     date = datetime.date.today() - datetime.timedelta(days=1)
-    rs = bs.query_all_stock(day=date)   # 查询交易状态,缺省是当前时间
+    rs = bs.query_all_stock(day='2022-11-04')  #date)   # 查询交易状态,缺省是当前时间
     while (rs.error_code == '0') & rs.next():
         rs_item = rs.get_row_data()
         rs_item_code = rs_item[0]
