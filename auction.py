@@ -1,3 +1,6 @@
+#-*- coding: UTF-8 -*-
+# 爬取东财网竞价（9:15-9:30）期间出现的涨幅超过8%的股票，写入tdx.auction表
+
 import datetime
 import pymysql
 import requests
@@ -26,7 +29,7 @@ def import_data():
     isTradeday = data_list[0][1]
 
     if isTradeday == "1":
-        headers={'Referer' :'https://finance.sina.com.cn'}
+        headers = {'Referer': 'https://finance.sina.com.cn'}
         # url='https://hq.sinajs.cn/list=sz002927'
 
         with open("config/config.json", encoding="utf-8") as f:
@@ -41,17 +44,26 @@ def import_data():
 
         cur_auction = cnx.cursor()
         cur_auction_insert = "insert into auction(code,a_date,a_price,a_gains) values('%s','%s','%s','%f')"
+        time1 = '09:30:00'
         for item in database_index:
+            time2 = datetime.datetime.now().strftime("%H:%M:%S")
+            if time2 >= time1:
+                break;
             code = item[0]
-            url = 'https://hq.sinajs.cn/list='+re.sub('[.]','',code)
-            file=requests.get(url=url,headers=headers)
+            url = 'https://hq.sinajs.cn/list=' + re.sub('[.]', '', code)
+            file = requests.get(url=url, headers=headers)
             parts = file.text.split(',')
-            preclose_price  = float(parts[2])
+            preclose_price = float(parts[2])
+
+            filename = code + ".txt"
+            with open(filename, "wb") as f:
+                f.write(file.content)
+
             buy1_price = float(parts[6])
             if preclose_price is not None and preclose_price != 0:
                 a_gains = (buy1_price - preclose_price) / preclose_price * 100
-                if a_gains >= 9.8:
-                    cur_auction.execute(cur_auction_insert%(code,today,buy1_price,a_gains))
+                if a_gains >= 8:
+                    cur_auction.execute(cur_auction_insert % (code, time2, buy1_price, a_gains))
                     cnx.commit()
 
         cur_index.close()
