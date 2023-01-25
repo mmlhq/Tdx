@@ -6,6 +6,7 @@ import pymysql
 import json
 from apscheduler.schedulers.blocking import BlockingScheduler
 
+
 def Update_trade_status():
     lg = bs.login()
 
